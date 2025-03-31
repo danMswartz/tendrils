@@ -69,7 +69,7 @@
       tendrils[i].update();
       tendrils[i].draw(context);
     }
-Fix: overwrite tendrils.js with correct script
+
     requestAnimationFrame(loop);
   }
 

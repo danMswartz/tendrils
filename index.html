@@ -2,14 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tendrils Page</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Tendrils Debug</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    h1 {
+      position: relative;
+      z-index: 1;
+      color: white;
+      text-align: center;
+      margin-top: 20vh;
+    }
+  </style>
 </head>
 <body>
-  <h1>Welcome to the Tendrils Page</h1>
-
-  <!-- Load the animation -->
+  <h1>Tendrils Debug Mode</h1>
   <script src="js/tendrils.js"></script>
 </body>
 </html>

@@ -61,7 +61,9 @@
   }
 
   function loop() {
-    context.clearRect(0, 0, width, height);
+    context.fillStyle = 'rgba(0, 0, 0, 0.1)';
+    context.fillRect(0, 0, width, height);
+
     context.strokeStyle = 'rgba(0,255,255,0.5)';
     context.lineWidth = 1.5;
 

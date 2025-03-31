@@ -1,5 +1,5 @@
 (function() {
-  var canvas = document.createElement('canvas');
+  const canvas = document.createElement('canvas');
   document.body.appendChild(canvas);
   canvas.style.position = 'fixed';
   canvas.style.top = '0';
@@ -7,33 +7,34 @@
   canvas.style.zIndex = '0';
   canvas.style.pointerEvents = 'none';
 
-  var context = canvas.getContext('2d');
-  var width = canvas.width = window.innerWidth;
-  var height = canvas.height = window.innerHeight;
+  const ctx = canvas.getContext('2d');
+  let width = canvas.width = window.innerWidth;
+  let height = canvas.height = window.innerHeight;
 
-  var mouse = { x: width / 2, y: height / 2 };
-  document.addEventListener('mousemove', function(e) {
+  const mouse = { x: width / 2, y: height / 2 };
+  document.addEventListener('mousemove', (e) => {
     mouse.x = e.clientX;
     mouse.y = e.clientY;
   });
 
   function Tendril() {
-    this.spring = 0.45 + 0.025 * Math.random();
-    this.friction = 0.5 + 0.05 * Math.random();
-    this.nodes = [];
-
-    for (var i = 0; i < 30; i++) {
-      this.nodes.push({ x: mouse.x, y: mouse.y, vx: 0, vy: 0 });
-    }
+    this.spring = 0.4 + Math.random() * 0.1;
+    this.friction = 0.5 + Math.random() * 0.05;
+    this.nodes = Array.from({ length: 30 }, () => ({
+      x: mouse.x,
+      y: mouse.y,
+      vx: 0,
+      vy: 0,
+    }));
   }
 
   Tendril.prototype.update = function() {
-    var node = this.nodes[0];
+    let node = this.nodes[0];
     node.vx += (mouse.x - node.x) * this.spring;
     node.vy += (mouse.y - node.y) * this.spring;
 
-    for (var i = 1; i < this.nodes.length; i++) {
-      var prev = this.nodes[i - 1];
+    for (let i = 1; i < this.nodes.length; i++) {
+      const prev = this.nodes[i - 1];
       node = this.nodes[i];
       node.vx += (prev.x - node.x) * this.spring;
       node.vy += (prev.y - node.y) * this.spring;
@@ -44,36 +45,20 @@
     }
   };
 
-  Tendril.prototype.draw = function(context) {
-    context.beginPath();
-    context.moveTo(this.nodes[0].x, this.nodes[0].y);
-    for (var i = 1; i < this.nodes.length - 2; i++) {
-      var xc = (this.nodes[i].x + this.nodes[i + 1].x) / 2;
-      var yc = (this.nodes[i].y + this.nodes[i + 1].y) / 2;
-      context.quadraticCurveTo(this.nodes[i].x, this.nodes[i].y, xc, yc);
+  Tendril.prototype.draw = function(ctx) {
+    ctx.beginPath();
+    ctx.moveTo(this.nodes[0].x, this.nodes[0].y);
+    for (let i = 1; i < this.nodes.length - 2; i++) {
+      const xc = (this.nodes[i].x + this.nodes[i + 1].x) / 2;
+      const yc = (this.nodes[i].y + this.nodes[i + 1].y) / 2;
+      ctx.quadraticCurveTo(this.nodes[i].x, this.nodes[i].y, xc, yc);
     }
-    context.stroke();
+    ctx.stroke();
   };
 
-  var tendrils = [];
-  for (var i = 0; i < 30; i++) {
-    tendrils.push(new Tendril());
-  }
+  const tendrils = Array.from({ length: 20 }, () => new Tendril());
 
   function loop() {
-    context.fillStyle = 'rgba(0, 0, 0, 0.1)';
-    context.fillRect(0, 0, width, height);
-
-    context.strokeStyle = 'rgba(0,255,255,0.5)';
-    context.lineWidth = 1.5;
-
-    for (var i = 0; i < tendrils.length; i++) {
-      tendrils[i].update();
-      tendrils[i].draw(context);
-    }
-
-    requestAnimationFrame(loop);
-  }
-
-  loop();
-})();
+    // TRAIL EFFECT — translucent fade instead of full clear
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+    ctx.fillRect

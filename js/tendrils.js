@@ -59,6 +59,19 @@
   const tendrils = Array.from({ length: 20 }, () => new Tendril());
 
   function loop() {
-    // TRAIL EFFECT — translucent fade instead of full clear
     ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-    ctx.fillRect
+    ctx.fillRect(0, 0, width, height);
+
+    ctx.strokeStyle = 'rgba(0,255,255,0.9)';
+    ctx.lineWidth = 1.5;
+
+    for (const t of tendrils) {
+      t.update();
+      t.draw(ctx);
+    }
+
+    requestAnimationFrame(loop);
+  }
+
+  loop();
+})();
